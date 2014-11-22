@@ -91,14 +91,29 @@ function convertWord(word) {
 }
 
 function changeChar(huruf){
-    for(var i = 0;i<normal.length;i++){
-        if(normal[i] == huruf){
-            result += walian[i];
-            if(tmpVokal[j] !== undefined){
-                result += tmpVokal[j];
-                j++;
+    if(huruf instanceof Array){
+        for(var i=0;i<huruf.length;i++){
+            for(var k=0;k<normal.length;k++){
+                if(normal[k] == huruf[i]){
+                    result += walian[k];
+                    break;
+                }
             }
-            break;
+        }
+        if(tmpVokal[j] !== undefined){
+            result += tmpVokal[j];
+            j++;
+        }
+    }else{
+        for(var i = 0; i<normal.length;i++){
+            if(normal[i] == huruf){
+                result += walian[i];
+                if(tmpVokal[j] !== undefined){
+                    result += tmpVokal[j];
+                    j++;
+                }
+                break;
+            }
         }
     }
 }
