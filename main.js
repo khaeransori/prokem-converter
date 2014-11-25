@@ -8,6 +8,8 @@ var tmpVokal;
 var j;
 var sentence;
 
+//test test
+
 //Ver 2.2
 function convertSentence() {
     sentence = '';
