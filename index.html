@@ -48,12 +48,18 @@
 </style>
 </head>
 <body>
-    <h1>Prokem Semarang Converter</h1>
-    <p class="subtitle">Boso gali &mdash; basa walikan Semarangan</p>
+    <h1>Prokem Converter</h1>
+    <p class="subtitle">Walikan Semarang (boso gali) &amp; Bahasa Unang</p>
 
     <div class="mode">
-        <label><input type="radio" name="mode" id="mode-encode" value="encode" checked onchange="convertInput()"> Jawa &rarr; Prokem</label>
-        <label><input type="radio" name="mode" id="mode-decode" value="decode" onchange="convertInput()"> Prokem &rarr; Jawa</label>
+        <strong>Bahasa:</strong>
+        <label><input type="radio" name="lang" value="walikan" checked onchange="convertInput()"> Walikan Semarang</label>
+        <label><input type="radio" name="lang" value="unang" onchange="convertInput()"> Bahasa Unang</label>
+    </div>
+    <div class="mode">
+        <strong>Arah:</strong>
+        <label><input type="radio" name="mode" id="mode-encode" value="encode" checked onchange="convertInput()"> <span id="label-encode">Jawa &rarr; Prokem</span></label>
+        <label><input type="radio" name="mode" id="mode-decode" value="decode" onchange="convertInput()"> <span id="label-decode">Prokem &rarr; Jawa</span></label>
     </div>
 
     <textarea rows="4" id="input" placeholder="Ketik kata atau kalimat di sini&hellip;" oninput="convertInput()"></textarea>
@@ -63,6 +69,7 @@
     <div id="output"></div>
 
     <div class="notes">
+        <h3>Walikan Semarang</h3>
         <p>Rumusnya menukar sepuluh aksara Jawa pertama dengan sepuluh aksara
         terakhir dalam urutan terbalik; vokal tetap dan rumus berlaku dua arah:</p>
         <p class="rumus">ha  na  ca  ra  ka  da  ta  sa  wa  la
@@ -100,6 +107,24 @@ nga tha ba  ga  ma  nya ya  ja  dha pa</p>
         Rumus mengikuti Samidjan (2013) sebagaimana dikutip Khoiriyah (2018),
         <em>Bahasa Prokem Semarang atau Basa Walikan dalam Komunikasi di Kota
         Semarang</em>, skripsi UNNES.</p>
+
+        <h3>Bahasa Unang</h3>
+        <p>Setiap kata dipecah menjadi dua kata dengan rumus
+        <strong>U(x)&nbsp;(b)n(c)ng</strong>, di mana <em>x</em> = suku kata
+        terakhir yang seluruh vokalnya diubah menjadi &lsquo;a&rsquo;
+        (konsonan tepat sebelum suku kata terakhir ikut ke <em>x</em>),
+        <em>b</em> = kata tanpa suku kata terakhirnya, dan <em>c</em> = vokal
+        asli suku kata terakhir. Kata satu suku kata membuang <em>b</em>,
+        dan akhiran <em>-nya</em> dipisah dulu lalu ditempel di belakang.</p>
+        <table>
+            <tr><th>Indonesia</th><th>Unang</th></tr>
+            <tr><td>hancur</td><td>uncar hanung</td></tr>
+            <tr><td>lari</td><td>ura laning</td></tr>
+            <tr><td>siapa</td><td>upa sianang</td></tr>
+            <tr><td>sebentar</td><td>untar sebenang</td></tr>
+            <tr><td>bel</td><td>ubal neng</td></tr>
+            <tr><td>sepedanya</td><td>uda sepenangnya</td></tr>
+        </table>
     </div>
 
     <script src="main.js"></script>
