@@ -12,6 +12,48 @@
  * Contoh: mangan = ma-nga-n -> ka-ha-th (kahath), mas -> kas
  */
 
+/**
+ * Kamus kosakata yang tercatat di sumber (skripsi UNNES, aslisemarang.id,
+ * Mojok, Halo Semarang). Dipakai dua arah, dicek sebelum rumus, supaya
+ * bentuk yang lazim dipakai selalu keluar persis seperti yang tercatat
+ * dan bentuk yang menyimpang dari rumus tetap dikenali.
+ */
+var LEXICON = {
+    mangan:  'kahath',   // makan
+    ombe:    'ngoce',    // minum
+    turu:    'yugu',     // tidur
+    lunga:   'puha',     // pergi
+    mas:     'kas',      // mas
+    bapak:   'calam',    // bapak
+    wedok:   'dhenyom',  // perempuan
+    enak:    'ngetham',  // enak
+    apik:    'ngalim',   // bagus
+    iso:     'ngijo',    // bisa
+    ireng:   'ngigeng',  // hitam
+    rokok:   'gomom',    // rokok
+    kopi:    'moli',     // kopi
+    sik:     'jim',      // dulu, sebentar
+    rak:     'gam',      // tidak
+    ono:     'ngotho',   // ada
+    sikat:   'jimat',    // sikat, ambil
+    jalan:   'sapath',   // jalan
+    loro:    'pogo',     // dua
+    seket:   'jemet',    // lima puluh
+    sepuluh: 'jelupuh'   // sepuluh
+};
+
+// Ejaan longgar yang beredar di masyarakat, hanya dikenali saat decode.
+// Skripsi UNNES mencatat "kahath" sering ditulis "kahad"/"kahat".
+var DECODE_LEXICON = {
+    kahat: 'mangan',
+    kahad: 'mangan'
+};
+(function () {
+    for (var word in LEXICON) {
+        DECODE_LEXICON[LEXICON[word]] = word;
+    }
+})();
+
 var LETTERS = ['h','n','c','r','k','d','t','s','w','l','p','dh','j','y','ny','m','g','b','th','ng'];
 
 var CIPHER = {};
@@ -30,22 +72,32 @@ function tokenize(word) {
     return word.match(/ng|ny|th|dh|[a-z]/g) || [];
 }
 
+// Konsonan akhir yang tidak ikut ditukar. Hasil tukarannya janggal atau
+// sulit dilafalkan di akhir kata, jadi dalam praktik dibiarkan:
+// mas -> kas (bukan "kaj"), sikat -> jimat (bukan "jimay"),
+// sepuluh -> jelupuh (bukan "jelupung"), ireng -> ngigeng (bukan "ngigeh").
+var KEEP_FINAL = { t: true, s: true, h: true, ng: true };
+
 function applyCipher(word) {
     var tokens = tokenize(word);
     var out = '';
     for (var t = 0; t < tokens.length; t++) {
-        // vokal dan huruf di luar hanacaraka (f, q, v, x, z) dibiarkan
-        out += CIPHER[tokens[t]] || tokens[t];
-    }
-    // Bunyi /j/ janggal di akhir kata Jawa, dikembalikan menjadi /s/
-    // sehingga mas -> kas (bukan "kaj"). Berlaku dua arah: kas -> mas.
-    if (out.charAt(out.length - 1) === 'j') {
-        out = out.slice(0, -1) + 's';
+        if (t === tokens.length - 1 && KEEP_FINAL[tokens[t]]) {
+            out += tokens[t];
+        } else {
+            // vokal dan huruf di luar hanacaraka (f, q, v, x, z) dibiarkan
+            out += CIPHER[tokens[t]] || tokens[t];
+        }
     }
     return out;
 }
 
 function encodeWord(word) {
+    // Kosakata yang tercatat di sumber dipakai apa adanya.
+    if (LEXICON.hasOwnProperty(word)) {
+        return LEXICON[word];
+    }
+
     // Kluster sengau homorgan (mb, nd, ndh, nj, ngg) dibaca satu bunyi;
     // sengaunya luluh sebelum ditukar, sehingga ombe -> ngoce (bukan "ngokce").
     word = word
@@ -68,6 +120,11 @@ function encodeWord(word) {
 }
 
 function decodeWord(word) {
+    // Kosakata yang tercatat (termasuk ejaan longgar) dikenali langsung.
+    if (DECODE_LEXICON.hasOwnProperty(word)) {
+        return DECODE_LEXICON[word];
+    }
+
     // Rumusnya simetris, jadi penukarannya sama dengan encode.
     var out = applyCipher(word);
 
