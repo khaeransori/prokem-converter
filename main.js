@@ -1,123 +1,129 @@
-var normal      = ['h','n','c','r','k','d','t','s','w','l','p','dh','j','y','ny','m','g','b','th','ng'];
-var walian      = ['ng','th','b','g','m','ny','y','j','dh','p','l','w','s','t','d','k','r','c','n','h'];
-var input       = '';
-var output      = '';
-var splitter    = '';
-var result      = '';
-var tmpVokal;
-var j;
-var sentence;
+/**
+ * Prokem Semarang (boso gali / basa walikan Semarang) converter — Ver 3.0
+ *
+ * Rumus (Samidjan 2013, dikutip Khoiriyah 2018, skripsi UNNES):
+ * sepuluh aksara Jawa pertama ditukar dengan sepuluh aksara terakhir
+ * dalam urutan terbalik. Hanya konsonan yang ditukar, vokal tetap,
+ * dan rumusnya simetris (berlaku dua arah).
+ *
+ *   ha  na  ca  ra  ka  da  ta  sa  wa  la
+ *   nga tha ba  ga  ma  nya ya  ja  dha pa
+ *
+ * Contoh: mangan = ma-nga-n -> ka-ha-th (kahath), mas -> kas
+ */
 
-//test test
-//Test 123, jati test as collaborator on main.js
+var LETTERS = ['h','n','c','r','k','d','t','s','w','l','p','dh','j','y','ny','m','g','b','th','ng'];
 
-//Ver 2.2
-function convertSentence() {
-    sentence = '';
-    input = document.getElementById('input').value;
-    
-    var words = input.split(' ');
-
-    for(var i=0;i<words.length;i++){
-        word = fixWord(words[i]);
-        convertWord(word);
-    }
-    document.getElementById('output').innerHTML = sentence;
+var CIPHER = {};
+for (var i = 0; i < LETTERS.length; i++) {
+    CIPHER[LETTERS[i]] = LETTERS[LETTERS.length - 1 - i];
 }
 
-function fixWord (word) {
-    // cek dulu apakah huruf depannya vokal
-    // jika iya tambahkan h didepannya
-    // misal: aku menjadi haku
-    if(word.charAt(0)=='a' || word.charAt(0)=='i' || word.charAt(0)=='u' || word.charAt(0)=='e' || word.charAt(0)=='o'){
+var VOWELS = 'aiueo';
+
+function isVowel(ch) {
+    return ch !== '' && ch !== undefined && VOWELS.indexOf(ch) !== -1;
+}
+
+// Satu token = digraf aksara (ng/ny/th/dh) atau satu huruf.
+function tokenize(word) {
+    return word.match(/ng|ny|th|dh|[a-z]/g) || [];
+}
+
+function applyCipher(word) {
+    var tokens = tokenize(word);
+    var out = '';
+    for (var t = 0; t < tokens.length; t++) {
+        // vokal dan huruf di luar hanacaraka (f, q, v, x, z) dibiarkan
+        out += CIPHER[tokens[t]] || tokens[t];
+    }
+    // Bunyi /j/ janggal di akhir kata Jawa, dikembalikan menjadi /s/
+    // sehingga mas -> kas (bukan "kaj"). Berlaku dua arah: kas -> mas.
+    if (out.charAt(out.length - 1) === 'j') {
+        out = out.slice(0, -1) + 's';
+    }
+    return out;
+}
+
+function encodeWord(word) {
+    // Kluster sengau homorgan (mb, nd, ndh, nj, ngg) dibaca satu bunyi;
+    // sengaunya luluh sebelum ditukar, sehingga ombe -> ngoce (bukan "ngokce").
+    word = word
+        .replace(/ngg/g, 'g')
+        .replace(/ndh/g, 'dh')
+        .replace(/nd/g, 'd')
+        .replace(/mb/g, 'b')
+        .replace(/nj/g, 'j');
+
+    // Kata berawalan vokal diberi "h" dulu: aku -> haku -> ngamu.
+    if (isVowel(word.charAt(0))) {
         word = 'h' + word;
     }
 
-    // kemudian split berdasarkan terlebih dahulu untuk mengecek apakah ada 2 vokal yang berdampingan
-    // jika iya tambahkan h diantaranya
-    // misal: amalia [ia]
-    character   = word.split('');
-    tmp         = '';
+    // Dua vokal berdampingan disisipi "h" supaya tiap vokal punya
+    // pasangan konsonan: amalia -> amaliha.
+    word = word.replace(/([aiueo])(?=[aiueo])/g, '$1h');
 
-    for (var current = 0; current < character.length; current++) {
-        if (character[current]=='a' || character[current]=='i' || character[current]=='u' || character[current]=='e' || character[current]=='o') {
-            next = current + 1;
-            if (character[next]=='a' || character[next]=='i' || character[next]=='u' || character[next]=='e' || character[next]=='o') {
-                character[current] += 'h';
-            }
-        }
-
-        tmp += character[current];
-    }
-
-    return tmp;
+    return applyCipher(word);
 }
 
-function convertWord(word) {
-    // inisialisasi variabel
-    j           = 0;
-    tmpVokal    = '';
-    input       = word;
-    result      = '';
+function decodeWord(word) {
+    // Rumusnya simetris, jadi penukarannya sama dengan encode.
+    var out = applyCipher(word);
 
-    splitter = input.split(/[aeiou]/gi);
-    
-    tmpVokal = input.match(new RegExp(/[aeiou]/gi));
-    
-    for(var i = 0; i < splitter.length; i++) {
-        if (splitter[i].length == 1) {
-            changeChar(splitter[i]);
-        } else {
-            if (splitter[i] == 'th' || splitter[i] == 'dh' || splitter[i] == 'ng' || splitter[i] == 'ny') {
-                changeChar(splitter[i]);
-            } else {
-                splitter[i] = splitter[i].split('');
-                changeChar(splitter[i]);
-            }
-        }
+    // Buang "h" tambahan di depan vokal: ngamu -> haku -> aku.
+    // (Dalam hanacaraka bunyi awal a/ha memang setara.)
+    if (out.charAt(0) === 'h' && isVowel(out.charAt(1))) {
+        out = out.slice(1);
     }
-    
-    // cek apakah huruf belakangnya th atau dh
-    // jika iya hapus h paling belakang
-    last_string = result.substring(result.length-2, result.length);
-    if (last_string == 'th' || last_string == 'dh') {
-        result = result.substring(0, result.length-1);
-    }
-    
-    // cek apakah huruf paling belakangnya adalah j
-    // jika iya kembalikan menjadi s
-    if(result.charAt(result.length-1)=='j'){
-        result = result.substring(0,result.length-1)+'s';
-    }
-    
-    sentence += result+' ';
+
+    // Catatan: "h" sisipan di antara dua vokal tidak bisa dibedakan dari
+    // "h" asli (mis. bahasa, tahu), jadi tidak dibuang saat decode.
+    return out;
 }
 
-function changeChar(huruf){
-    if(huruf instanceof Array){
-        for(var i=0;i<huruf.length;i++){
-            for(var k=0;k<normal.length;k++){
-                if(normal[k] == huruf[i]){
-                    result += walian[k];
-                    break;
-                }
-            }
+function convert(text, mode) {
+    var convertWord = mode === 'decode' ? decodeWord : encodeWord;
+    // Hanya rangkaian huruf yang diubah; spasi, angka, dan tanda baca tetap.
+    return text.split(/([A-Za-z]+)/).map(function (part) {
+        if (!/^[A-Za-z]+$/.test(part)) {
+            return part;
         }
-        if(tmpVokal[j] !== undefined){
-            result += tmpVokal[j];
-            j++;
+        var capital = part.charAt(0) !== part.charAt(0).toLowerCase();
+        var out = convertWord(part.toLowerCase());
+        if (capital && out !== '') {
+            out = out.charAt(0).toUpperCase() + out.slice(1);
         }
-    }else{
-        for(var i = 0; i<normal.length;i++){
-            if(normal[i] == huruf){
-                result += walian[i];
-                if(tmpVokal[j] !== undefined){
-                    result += tmpVokal[j];
-                    j++;
-                }
-                break;
-            }
-        }
-    }
+        return out;
+    }).join('');
 }
 
+function convertInput() {
+    var mode = document.querySelector('input[name="mode"]:checked').value;
+    var text = document.getElementById('input').value;
+    document.getElementById('output').textContent = convert(text, mode);
+}
+
+function swapDirection() {
+    var encode = document.getElementById('mode-encode');
+    var decode = document.getElementById('mode-decode');
+    var input = document.getElementById('input');
+    var output = document.getElementById('output');
+
+    if (encode.checked) {
+        decode.checked = true;
+    } else {
+        encode.checked = true;
+    }
+    input.value = output.textContent;
+    convertInput();
+}
+
+// Supaya bisa diuji dengan Node.js
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        convert: convert,
+        encodeWord: encodeWord,
+        decodeWord: decodeWord
+    };
+}

@@ -1,17 +1,89 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="id">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Prokem Semarang</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prokem Semarang Converter</title>
+<style>
+    body {
+        font-family: Georgia, 'Times New Roman', serif;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 24px 16px;
+        color: #222;
+        background: #faf8f4;
+        line-height: 1.5;
+    }
+    h1 { font-size: 1.5em; margin-bottom: 4px; }
+    .subtitle { color: #666; margin-top: 0; }
+    .mode { margin: 16px 0 8px; }
+    .mode label { margin-right: 16px; cursor: pointer; }
+    textarea {
+        width: 100%;
+        box-sizing: border-box;
+        font: inherit;
+        padding: 8px;
+        border: 1px solid #bbb;
+        border-radius: 4px;
+        background: #fff;
+    }
+    button {
+        font: inherit;
+        margin: 8px 0;
+        padding: 4px 12px;
+        cursor: pointer;
+    }
+    #output {
+        min-height: 2.5em;
+        padding: 8px;
+        border: 1px dashed #bbb;
+        border-radius: 4px;
+        background: #fff;
+        font-size: 1.15em;
+    }
+    table { border-collapse: collapse; margin: 8px 0; }
+    td, th { border: 1px solid #ccc; padding: 2px 10px; text-align: left; }
+    .notes { font-size: 0.85em; color: #555; margin-top: 24px; }
+    .rumus { font-family: monospace; white-space: pre; background: #f0ede6; padding: 8px; border-radius: 4px; display: inline-block; }
+</style>
 </head>
 <body>
-	<h3 align="center">Prokem Semarang Converter</h3>
-	<div>
-		<p>Input kata</p>
-		<textarea rows="5" cols="100" id="input"></textarea><br/>
-		<button onclick="convertSentence()">Convert</button>
-		<h4 id="output"></h4>
-	</div>
+    <h1>Prokem Semarang Converter</h1>
+    <p class="subtitle">Boso gali &mdash; basa walikan Semarangan</p>
+
+    <div class="mode">
+        <label><input type="radio" name="mode" id="mode-encode" value="encode" checked onchange="convertInput()"> Jawa &rarr; Prokem</label>
+        <label><input type="radio" name="mode" id="mode-decode" value="decode" onchange="convertInput()"> Prokem &rarr; Jawa</label>
+    </div>
+
+    <textarea rows="4" id="input" placeholder="Ketik kata atau kalimat di sini&hellip;" oninput="convertInput()"></textarea>
+    <br>
+    <button onclick="swapDirection()" title="Tukar arah dan pindahkan hasil ke kotak input">&#8645; Tukar arah</button>
+
+    <div id="output"></div>
+
+    <div class="notes">
+        <p>Rumusnya menukar sepuluh aksara Jawa pertama dengan sepuluh aksara
+        terakhir dalam urutan terbalik; vokal tetap dan rumus berlaku dua arah:</p>
+        <p class="rumus">ha  na  ca  ra  ka  da  ta  sa  wa  la
+nga tha ba  ga  ma  nya ya  ja  dha pa</p>
+        <table>
+            <tr><th>Jawa</th><th>Prokem</th></tr>
+            <tr><td>mangan</td><td>kahath</td></tr>
+            <tr><td>mas</td><td>kas</td></tr>
+            <tr><td>rokok</td><td>gomom</td></tr>
+            <tr><td>apik</td><td>ngalim</td></tr>
+            <tr><td>turu</td><td>yugu</td></tr>
+            <tr><td>kopi</td><td>moli</td></tr>
+        </table>
+        <p>Bahasa sandi ini muncul di kalangan gali (gabungan anak liar) Semarang
+        era 1970&ndash;1980an di sekitar Terminal Terboyo, Pasar Johar, dan
+        Pelabuhan Tanjung Emas, lalu menyebar menjadi bahasa gaul warga Semarang.
+        Rumus mengikuti Samidjan (2013) sebagaimana dikutip Khoiriyah (2018),
+        <em>Bahasa Prokem Semarang atau Basa Walikan dalam Komunikasi di Kota
+        Semarang</em>, skripsi UNNES.</p>
+    </div>
+
+    <script src="main.js"></script>
 </body>
-<script type="text/javascript" src="main.js"></script>
 </html>
