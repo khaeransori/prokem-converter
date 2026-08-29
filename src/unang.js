@@ -10,7 +10,7 @@
  * hancur -> uncar hanung, lari -> ura laning, sebentar -> untar sebenang,
  * bel -> ubal neng (b kosong), sepedanya -> uda sepenangnya.
  */
-import { mapWords } from './text.js'
+import { mapWords, restoreCase } from './text.js'
 
 // b + (kluster konsonan + deret vokal terakhir + konsonan penutup) = b + x.
 // Kluster konsonan sebelum deret vokal terakhir seluruhnya masuk ke x,
@@ -90,8 +90,7 @@ export function decode (text) {
     if (pairable) {
       const decoded = decodePair(part.toLowerCase(), parts[i + 2].toLowerCase())
       if (decoded !== null) {
-        const capital = part.charAt(0) !== part.charAt(0).toLowerCase()
-        out += capital ? decoded.charAt(0).toUpperCase() + decoded.slice(1) : decoded
+        out += restoreCase(part, decoded)
         i += 2
         continue
       }

@@ -9,7 +9,7 @@
  * @param {string} out the converted word
  * @returns {string}
  */
-function restoreCase (source, out) {
+export function restoreCase (source, out) {
   if (out === '') return out
   const isUpper = source === source.toUpperCase() && source !== source.toLowerCase()
   if (isUpper && source.length > 1) return out.toUpperCase()

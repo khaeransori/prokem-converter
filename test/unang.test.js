@@ -53,3 +53,8 @@ test('preserves punctuation and case', () => {
 test('leaves a word with no vowel untouched', () => {
   assert.equal(encode('brr'), 'brr')
 })
+
+test('restores ALL CAPS on the way back', () => {
+  assert.equal(encode('HANCUR'), 'UNCAR HANUNG')
+  assert.equal(decode('UNCAR HANUNG'), 'HANCUR')
+})
