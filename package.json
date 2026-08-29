@@ -16,7 +16,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/khaeransori/prokem-converter.git"
+    "url": "git+https://github.com/khaeransori/prokem.git"
   },
   "engines": {
     "node": ">=20"
