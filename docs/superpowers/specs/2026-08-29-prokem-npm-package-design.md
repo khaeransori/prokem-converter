@@ -6,8 +6,9 @@ Status: approved for planning
 ## Goal
 
 Turn this repo into `prokem`, an npm package that converts Indonesian and
-Javanese text into four secret-language dialects, and back. The existing
-static demo stays, now driven by the package it documents.
+Javanese text into four secret-language dialects, and back. The repo becomes a
+library and nothing else; the current `index.html` demo is removed, and a site
+may be built separately later against the published package.
 
 - `semarang` — walikan Semarang (boso gali), already implemented here
 - `unang` — bahasa Unang, already implemented here
@@ -99,11 +100,15 @@ bin/prokem.js     CLI
 test/*.test.js    node:test
 dist/prokem.js    esbuild IIFE bundle, committed
 types/            .d.ts emitted from JSDoc, publish-time only
-index.html        demo, four-way picker, loads dist/
+README.md         usage, the four dialects' rules, sources, credits
 ```
 
-`main.js` is deleted. Its Semarang and Unang logic moves into `src/` with no
-behavioural change; the current outputs become test vectors.
+`main.js` and `index.html` are both deleted. The Semarang and Unang logic moves
+into `src/` with no behavioural change, and the current outputs become test
+vectors. `index.html` is not merely dropped: its rule descriptions, the UNNES
+citation, and its worked-example tables are the only place some of that content
+exists, so before deletion the prose moves to `README.md` and every example pair
+in its tables is captured as a golden test vector.
 
 `src/hanacaraka.js` owns the twenty-letter table exactly once:
 
@@ -198,8 +203,9 @@ since 2014 and parity is the entire reason it is present.
 Authoring is plain ESM with JSDoc annotations. TypeScript is a build-time
 dependency only, run as `tsc -p jsconfig.json` to emit `types/` before publish;
 no `.ts` source, no transpiled JS. `esbuild` produces `dist/prokem.js`, an IIFE
-bundle with `globalName: 'prokem'` that inlines libil, committed to the repo so
-the demo works from `file://` and over GitHub Pages.
+bundle with `globalName: 'prokem'` that inlines libil, committed to the repo and
+published so `<script>` and CDN consumers (jsDelivr, unpkg) can use the library
+without a bundler. With the demo gone this build serves external consumers only.
 
 ESM-only. Consumers on CJS use the `dist/` bundle or dynamic `import()`.
 
@@ -210,8 +216,9 @@ ESM-only. Consumers on CJS use the `dist/` bundle or dynamic `import()`.
 1. **Golden vectors** per dialect. Jogja and Malang vectors are generated from
    libil itself and committed, so any drift from upstream — a fork, a version
    bump, an accidental reimplementation — fails the suite. Semarang and Unang
-   vectors come from the current `main.js` output plus the tables in
-   `index.html`, so the rewrite is provably behaviour-preserving.
+   vectors come from the current `main.js` output plus every example pair in
+   the `index.html` tables, captured before that file is deleted, so the
+   rewrite is provably behaviour-preserving.
 2. **Round-trip properties**: `decode(encode(w)) === w` across the lexicon and a
    word list, per dialect. Semarang's medial-`h` case and any other known
    non-invertible input are asserted as explicit known exceptions rather than
@@ -219,17 +226,17 @@ ESM-only. Consumers on CJS use the `dist/` bundle or dynamic `import()`.
 3. **Text handling**: punctuation, multiple spaces, newlines, digits, and the
    three capitalisation forms survive a round trip.
 
-## Demo page
+## README
 
-`index.html` keeps its current structure. The language radio group goes from
-two options to four; `convertInput()` drives `dialects[name]` instead of a
-mode string. The notes section gains rule descriptions and example tables for
-Jogja and Malang, alongside the existing Semarang and Unang ones, and credits
-libil under MIT.
+`README.md` becomes the only human-facing surface. It carries the install and
+usage snippets, a rules section per dialect with worked examples, the UNNES
+citation for Semarang, the MIT credit to libil for Jogja and Malang, and the
+CLI usage. The rule prose currently living in `index.html` is moved here
+verbatim where it still applies.
 
 ## Out of scope for 1.0
 
-Additional dialects (Malang has documented variants beyond plain reversal;
-Bandung and Jakarta prokem are different systems), a browser UI beyond the
-existing demo, and any attempt to make Semarang's medial-`h` insertion
+A website or demo page. The repo ships a library; a site can be built later
+against the published package. Also out of scope: additional dialects (Malang has documented variants beyond plain reversal;
+Bandung and Jakarta prokem are different systems), and any attempt to make Semarang's medial-`h` insertion
 reversible.
