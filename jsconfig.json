@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+    "outDir": "types",
+    "rootDir": "src",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "es2022",
+    "strict": true,
+    "skipLibCheck": true,
+    "paths": { "libil/lib/libil.js": ["./src/libil.d.ts"] }
+  },
+  "include": ["src/**/*.js", "src/libil.d.ts"]
+}

@@ -22,7 +22,10 @@
     "node": ">=20"
   },
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "types": "tsc -p jsconfig.json",
+    "build": "esbuild src/index.js --bundle --format=iife --global-name=prokem --outfile=dist/prokem.js",
+    "prepublishOnly": "npm run types && npm run build && npm test"
   },
   "bin": {
     "prokem": "./bin/prokem.js"
@@ -33,12 +36,37 @@
   "main": "./src/index.js",
   "sideEffects": false,
   "exports": {
-    ".": "./src/index.js",
-    "./semarang": "./src/semarang.js",
-    "./jogja": "./src/jogja.js",
-    "./malang": "./src/malang.js",
-    "./unang": "./src/unang.js",
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./semarang": {
+      "types": "./types/semarang.d.ts",
+      "default": "./src/semarang.js"
+    },
+    "./jogja": {
+      "types": "./types/jogja.d.ts",
+      "default": "./src/jogja.js"
+    },
+    "./malang": {
+      "types": "./types/malang.d.ts",
+      "default": "./src/malang.js"
+    },
+    "./unang": {
+      "types": "./types/unang.d.ts",
+      "default": "./src/unang.js"
+    },
     "./package.json": "./package.json"
   },
-  "files": ["src", "bin", "dist", "types", "README.md"]
+  "files": [
+    "src",
+    "bin",
+    "dist",
+    "types",
+    "README.md"
+  ],
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
+  }
 }

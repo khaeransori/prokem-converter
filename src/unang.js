@@ -38,7 +38,9 @@ function encodeWord (word) {
   if (!m) return word // tanpa vokal, biarkan apa adanya
 
   const [, b, x] = m
-  const c = x.match(/[aeiou]+/)[0]
+  // x always contains a vowel by construction (SPLIT's middle group), so the
+  // match cannot be null; cast rather than add a runtime check that can't fire.
+  const c = /** @type {RegExpMatchArray} */ (x.match(/[aeiou]+/))[0]
   return 'u' + x.replace(/[aeiou]/g, 'a') + ' ' + b + 'n' + c + 'ng' + nya
 }
 

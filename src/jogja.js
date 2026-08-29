@@ -9,7 +9,7 @@
  * substitution followed by stripping the h that libil prefixes to
  * vowel-initial words (aku -> panyu -> haku -> aku).
  */
-import libil from 'libil'
+import libil from 'libil/lib/libil.js'
 import { stripH } from './hanacaraka.js'
 import { mapWords } from './text.js'
 
