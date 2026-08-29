@@ -88,11 +88,16 @@ Attested vocabulary, applied before the formula, is exported as `LEXICON`:
 | rokok | gomom | rokok |
 | kopi | moli | kopi |
 | sik | jim | dulu, sebentar |
-| rak ono | gam ngotho | tidak ada |
+| rak | gam | tidak |
+| ono | ngotho | ada |
 | sikat | jimat | sikat, ambil |
+| jalan | sapath | jalan |
 | loro | pogo | dua |
 | seket | jemet | lima puluh |
 | sepuluh | jelupuh | sepuluh |
+
+`rak` and `ono` are separate entries that combine as a phrase: `rak ono` →
+`gam ngotho`, "tidak ada".
 
 This code appeared among the *gali* of Semarang in the 1970s and 80s around
 Terminal Terboyo, Pasar Johar and Pelabuhan Tanjung Emas, and spread into the
@@ -127,10 +132,14 @@ first and reattached at the end.
 | bel | ubal neng |
 | sepedanya | uda sepenangnya |
 
+Decoding is pattern-based, not a lookup, so it can occasionally match and
+transform an ordinary two-word phrase that was never Unang at all — for
+example `unang.decode('untuk menang')` returns `'mentak'`.
+
 ## Round-trip fidelity
 
 Decoding recovers the original for every attested word and for the vast
-majority of formula-generated ones. Three cases are lossy by construction and
+majority of formula-generated ones. Four cases are lossy by construction and
 are asserted as known exceptions in the test suite:
 
 - Semarang inserts an `h` between adjacent vowels, and it cannot be told apart
@@ -138,6 +147,9 @@ are asserted as known exceptions in the test suite:
 - Semarang's nasal collapse discards the nasal: `ngombe` → `hoce` → `ngobe`.
 - In hanacaraka an initial `a` and an initial `ha` are the same aksara, so
   decoding cannot distinguish them.
+- A word ending in `y` or `j` encodes to one ending in `t` or `s` (`y→t`,
+  `j→s` under the Semarang cipher), and the final-consonant rule then refuses
+  to swap either back, since both are in `KEEP_FINAL`: `boy` → `cot` → `bot`.
 
 ## Credits
 

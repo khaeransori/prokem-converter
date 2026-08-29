@@ -66,6 +66,11 @@ test('known lossy round trip: the nasal collapse discards the nasal', () => {
   assert.equal(decode(encode('ngombe')), 'ngobe')
 })
 
+test('known lossy round trip: a final y or j encodes to a kept t or s', () => {
+  assert.equal(decode(encode('boy')), 'bot')
+  assert.equal(decode(encode('rudy')), 'rudt')
+})
+
 test('preserves punctuation, digits, spacing and case', () => {
   assert.equal(encode('Mangan!'), 'Kahath!')
   assert.equal(encode('mangan, turu'), 'kahath, yugu')

@@ -1,11 +1,14 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync, existsSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 import vm from 'node:vm'
 
-test('the browser bundle exposes a working global', { skip: !existsSync('dist/prokem.js') }, () => {
+const DIST_PATH = fileURLToPath(new URL('../dist/prokem.js', import.meta.url))
+
+test('the browser bundle exposes a working global', { skip: !existsSync(DIST_PATH) }, () => {
   const context = vm.createContext({})
-  vm.runInContext(readFileSync('dist/prokem.js', 'utf8'), context)
+  vm.runInContext(readFileSync(DIST_PATH, 'utf8'), context)
 
   assert.equal(context.prokem.semarang.encode('mangan'), 'kahath')
   assert.equal(context.prokem.jogja.encode('mangan'), 'daladh')
@@ -15,6 +18,6 @@ test('the browser bundle exposes a working global', { skip: !existsSync('dist/pr
     ['jogja', 'malang', 'semarang', 'unang'])
 })
 
-test('the bundle inlines libil rather than requiring it', { skip: !existsSync('dist/prokem.js') }, () => {
-  assert.doesNotMatch(readFileSync('dist/prokem.js', 'utf8'), /require\(["']libil["']\)/)
+test('the bundle inlines libil rather than requiring it', { skip: !existsSync(DIST_PATH) }, () => {
+  assert.doesNotMatch(readFileSync(DIST_PATH, 'utf8'), /require\(["']libil["']\)/)
 })

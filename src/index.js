@@ -12,5 +12,5 @@ import * as unang from './unang.js'
 export { semarang, jogja, malang, unang }
 export { LEXICON } from './semarang.js'
 
-/** @type {Record<string, { encode: (text: string) => string, decode: (text: string) => string }>} */
+/** @type {Record<'semarang' | 'jogja' | 'malang' | 'unang', { encode: (text: string) => string, decode: (text: string) => string }>} */
 export const dialects = { semarang, jogja, malang, unang }

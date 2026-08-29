@@ -42,8 +42,10 @@ record; the CLI and any consumer picker drive off that record.
 - Comments describing the dialect rules are in Indonesian; keep it that way.
 - Rule order in `semarang.js` `encodeWord` is load-bearing: lexicon, nasal
   collapse, `h` padding, cipher.
-- Three round trips are lossy by construction (medial `h`, nasal collapse,
-  initial `ha`/`a`). They are asserted as known exceptions — do not "fix" them.
+- Four round trips are lossy by construction (medial `h`, nasal collapse,
+  initial `ha`/`a`, and a final `y`/`j` encoding to a kept `t`/`s` — e.g.
+  `boy` → `cot` → `bot`). They are asserted as known exceptions — do not
+  "fix" them.
 - Attested forms that contradict a formula belong in `LEXICON`, not in a
   special case inside the cipher.
 - The browser bundle (`dist/prokem.js`) stays strict. `libil` 0.1.2 assigns

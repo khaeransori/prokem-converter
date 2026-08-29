@@ -1,3 +1,7 @@
+/*!
+ * prokem - MIT
+ * Includes libil 0.1.2 - MIT (c) 2014 Didiet Noor
+ */
 "use strict";
 var prokem = (() => {
   var __create = Object.create;
@@ -346,6 +350,7 @@ var prokem = (() => {
         nya = "nya";
       }
     }
+    if (!/[aeiou]/.test(stem)) return word;
     const m = stem.match(SPLIT);
     if (!m) return word;
     const [, b, x] = m;

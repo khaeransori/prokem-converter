@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import libil from 'libil'
+import libil from 'libil/lib/libil.js'
 import { encode, decode } from '../src/malang.js'
 
 const VECTORS = {

@@ -34,6 +34,10 @@ function encodeWord (word) {
     }
   }
 
+  // Tanpa vokal, SPLIT tidak akan pernah cocok tapi backtrack kuadratis pada
+  // deret konsonan panjang; putus lebih awal supaya regex tidak dijalankan.
+  if (!/[aeiou]/.test(stem)) return word
+
   const m = stem.match(SPLIT)
   if (!m) return word // tanpa vokal, biarkan apa adanya
 

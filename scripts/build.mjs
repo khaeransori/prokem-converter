@@ -18,11 +18,19 @@ const declareLibilGlobals = {
   }
 }
 
+// Attribution for both bundled works. This is a comment, not a statement, so
+// it does not push esbuild's "use strict" out of first-statement position.
+const BANNER = `/*!
+ * prokem - MIT
+ * Includes libil 0.1.2 - MIT (c) 2014 Didiet Noor
+ */`
+
 await esbuild.build({
   entryPoints: ['src/index.js'],
   bundle: true,
   format: 'iife',
   globalName: 'prokem',
   outfile: 'dist/prokem.js',
+  banner: { js: BANNER },
   plugins: [declareLibilGlobals]
 })
