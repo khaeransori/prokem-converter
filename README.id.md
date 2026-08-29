@@ -29,11 +29,11 @@ belakangnya tidak.
 Paket ini mengimplementasikan empat di antaranya, dua arah.
 
 ```bash
-npm install prokem
+npm install @khaeransori/prokem
 ```
 
 ```js
-import { semarang, jogja, malang, unang } from 'prokem'
+import { semarang, jogja, malang, unang } from '@khaeransori/prokem'
 
 semarang.encode('mangan')      // 'kahath'
 semarang.decode('kahath')      // 'mangan'
@@ -53,13 +53,13 @@ semarang.encode('Mangan sik, 2 menit!')   // 'Kahath jim, 2 kethit!'
 Impor satu ragam saja kalau ukuran bundel jadi pertimbangan:
 
 ```js
-import { encode } from 'prokem/jogja'
+import { encode } from '@khaeransori/prokem/jogja'
 ```
 
 Jalankan pemilih bahasa lewat record `dialects`:
 
 ```js
-import { dialects } from 'prokem'
+import { dialects } from '@khaeransori/prokem'
 dialects[name].encode(text)   // name: 'semarang' | 'jogja' | 'malang' | 'unang'
 ```
 
@@ -75,7 +75,7 @@ malang
 ## Peramban
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/prokem/dist/prokem.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@khaeransori/prokem/dist/prokem.js"></script>
 <script>prokem.semarang.encode('mangan')</script>
 ```
 
