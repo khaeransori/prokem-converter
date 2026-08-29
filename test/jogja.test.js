@@ -35,8 +35,8 @@ test('strips the h libil prefixes to vowel-initial words', () => {
 })
 
 test('does not apply the Semarang final-consonant rule', () => {
-  assert.equal(encode('sam'), 'bad')
-  assert.equal(encode('sikat'), 'binyag')
+  assert.equal(encode('mas'), 'dab')      // semarang keeps the final s: kas
+  assert.equal(encode('sikat'), 'binyag') // semarang keeps the final t: jimat
 })
 
 test('does not apply the Semarang nasal collapse', () => {
