@@ -2,6 +2,28 @@
 
 Converts Indonesian and Javanese text into four secret languages, and back.
 
+## What this is
+
+*Prokem* is the Indonesian word for an argot — a way of speaking built to be
+opaque to outsiders. The word is an example of the thing it names: it comes
+from *préman*, "street tough", chopped up and rebuilt around an inserted
+*-ok-*, the same pattern that turned *bapak* into *bokap* and gave a generation
+of Jakarta slang its shape.
+
+Across Java the most durable of these argots work by *walikan* — "reversal",
+from the Javanese *walik*, to turn something over. A word is put through one
+fixed transformation and comes out unreadable to anyone who does not know the
+rule, and perfectly ordinary to anyone who does. Each city settled on a
+different rule, so the transformation doubles as a badge of where you are from:
+Yogyakarta swaps letters across the twenty-letter hanacaraka alphabet, Malang
+reads words back to front, Semarang pairs the same alphabet a different way.
+
+These are not ciphers invented for this package. They are spoken, painted on
+shopfronts, and used daily — by traders, by football supporters, by anyone who
+wants the person beside them to understand and the person behind them not to.
+
+This package implements four of them, in both directions.
+
 ```bash
 npm install prokem
 ```
@@ -110,10 +132,19 @@ Semarang*, skripsi UNNES.
 The same twenty letters, paired in parallel instead of reversed: h↔p, n↔dh,
 c↔j, r↔y, k↔ny. *matamu* becomes *dagadu*, *mangan* becomes *daladh*.
 
+Yogyakarta's version is the one outsiders are most likely to have met without
+knowing it: the local clothing label Dagadu Djokdja takes its name from
+*dagadu*, which is simply *matamu*, "your eyes", run through this table.
+
 ### Walikan Malang (ngalam)
 
 The aksara of a word are read back to front, so *Malang* becomes *Ngalam* and
 *sam* becomes *mas*. Digraphs (ng, ny, th, dh) move as single units.
+
+*Ngalam* is what the city calls itself, and the argot — also known as osob
+kiwalan — is commonly traced to fighters during the independence struggle, who
+needed a way of speaking that an infiltrator could not follow. It stayed, and
+is now ordinary among *arek Malang*.
 
 ### Bahasa Unang
 
