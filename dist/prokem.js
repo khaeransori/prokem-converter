@@ -1,4 +1,3 @@
-/* libil (2014) relies on sloppy-mode implicit globals, so this bundle must not run strict. The no-op below demotes esbuild's emitted "use strict" from a directive to a dead expression. Do not remove. */ 0;
 "use strict";
 var prokem = (() => {
   var __create = Object.create;
@@ -39,6 +38,11 @@ var prokem = (() => {
   // node_modules/libil/lib/libil.js
   var require_libil = __commonJS({
     "node_modules/libil/lib/libil.js"(exports, module) {
+      var c;
+      var sc;
+      var idx;
+      var map_idx;
+      var m;
       var Libil = Libil || {};
       Libil.CONSONANT_MAP = [
         "h",
@@ -102,12 +106,12 @@ var prokem = (() => {
       };
       Libil.fixSourceVocal = function(s) {
         var vocals = ["a", "i", "u", "e", "o"];
-        var pair = s.slice(0, 2);
+        var pair2 = s.slice(0, 2);
         var c2 = s.charAt(0);
         if (vocals.indexOf(c2) != -1) {
-          if (Libil.capitalize(pair) == pair) {
+          if (Libil.capitalize(pair2) == pair2) {
             return "H" + c2.toLowerCase() + s.slice(1);
-          } else if (pair.toUpperCase() == pair) {
+          } else if (pair2.toUpperCase() == pair2) {
             return "H" + s;
           } else {
             return "h" + s;
@@ -119,16 +123,16 @@ var prokem = (() => {
       Libil.tokenize = function(s) {
         var w = Libil.fixSourceVocal(s);
         var tokens = [];
-        var pair = "";
+        var pair2 = "";
         if (!s.trim()) {
           return tokens;
         }
         for (var i = 0; i < w.length; ++i) {
           c = w[i];
-          pair = w.slice(i, i + 2);
-          if (-1 != Libil.CONSONANT_MAP.indexOf(pair.toLowerCase())) {
+          pair2 = w.slice(i, i + 2);
+          if (-1 != Libil.CONSONANT_MAP.indexOf(pair2.toLowerCase())) {
             ++i;
-            tokens.push(pair);
+            tokens.push(pair2);
           } else {
             tokens.push(c);
           }
@@ -342,14 +346,14 @@ var prokem = (() => {
         nya = "nya";
       }
     }
-    const m2 = stem.match(SPLIT);
-    if (!m2) return word;
-    const [, b, x] = m2;
-    const c2 = (
+    const m = stem.match(SPLIT);
+    if (!m) return word;
+    const [, b, x] = m;
+    const c = (
       /** @type {RegExpMatchArray} */
       x.match(/[aeiou]+/)[0]
     );
-    return "u" + x.replace(/[aeiou]/g, "a") + " " + b + "n" + c2 + "ng" + nya;
+    return "u" + x.replace(/[aeiou]/g, "a") + " " + b + "n" + c + "ng" + nya;
   }
   function decodePair(uWord, nWord) {
     if (uWord.charAt(0) !== "u") return null;
@@ -359,12 +363,12 @@ var prokem = (() => {
       nya = "nya";
       tail = tail.slice(0, -3);
     }
-    const m2 = tail.match(/^([a-z]*?)n([aeiou]+)ng$/);
-    if (!m2) return null;
-    const [, b, c2] = m2;
+    const m = tail.match(/^([a-z]*?)n([aeiou]+)ng$/);
+    if (!m) return null;
+    const [, b, c] = m;
     const x = uWord.slice(1);
     if (!/[aeiou]/.test(x)) return null;
-    return b + x.replace(/[aeiou]+/, c2) + nya;
+    return b + x.replace(/[aeiou]+/, c) + nya;
   }
   var encode4 = (text) => mapWords(text, encodeWord2);
   function decode4(text) {
