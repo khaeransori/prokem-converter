@@ -46,3 +46,8 @@ record; the CLI and any consumer picker drive off that record.
   initial `ha`/`a`). They are asserted as known exceptions — do not "fix" them.
 - Attested forms that contradict a formula belong in `LEXICON`, not in a
   special case inside the cipher.
+- The browser bundle (`dist/prokem.js`, built by `scripts/build.mjs`) must not
+  run in strict mode: `libil` (2014) relies on sloppy-mode implicit globals,
+  and executing it strict breaks `jogja`/`malang` encoding. `test/dist.test.js`
+  is the guard — do not remove the banner no-op that keeps esbuild's emitted
+  `"use strict"` from taking effect.
