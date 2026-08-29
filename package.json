@@ -4,10 +4,27 @@
   "description": "Converts Indonesian and Javanese text into walikan Semarang, Jogja, Malang, and bahasa Unang — and back",
   "type": "module",
   "license": "MIT",
-  "keywords": ["walikan", "prokem", "semarang", "jogja", "malang", "unang", "javanese", "indonesian"],
-  "repository": { "type": "git", "url": "git+https://github.com/khaeransori/prokem-converter.git" },
-  "engines": { "node": ">=20" },
+  "keywords": [
+    "walikan",
+    "prokem",
+    "semarang",
+    "jogja",
+    "malang",
+    "unang",
+    "javanese",
+    "indonesian"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khaeransori/prokem-converter.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "test": "node --test"
+  },
+  "dependencies": {
+    "libil": "0.1.2"
   }
 }
