@@ -63,7 +63,8 @@
     "bin",
     "dist",
     "types",
-    "README.md"
+    "README.md",
+    "README.id.md"
   ],
   "devDependencies": {
     "esbuild": "^0.28.2",

@@ -1,5 +1,7 @@
 # prokem
 
+**English** · [Bahasa Indonesia](README.id.md)
+
 Converts Indonesian and Javanese text into four secret languages, and back.
 
 ## What this is
