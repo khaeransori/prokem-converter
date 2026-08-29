@@ -26,5 +26,16 @@
   },
   "dependencies": {
     "libil": "0.1.2"
-  }
+  },
+  "main": "./src/index.js",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.js",
+    "./semarang": "./src/semarang.js",
+    "./jogja": "./src/jogja.js",
+    "./malang": "./src/malang.js",
+    "./unang": "./src/unang.js",
+    "./package.json": "./package.json"
+  },
+  "files": ["src", "bin", "dist", "types", "README.md"]
 }
