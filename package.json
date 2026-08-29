@@ -30,9 +30,6 @@
   "bin": {
     "prokem": "./bin/prokem.js"
   },
-  "dependencies": {
-    "libil": "0.1.2"
-  },
   "main": "./src/index.js",
   "sideEffects": false,
   "exports": {
@@ -68,6 +65,7 @@
   ],
   "devDependencies": {
     "esbuild": "^0.28.2",
+    "libil": "0.1.2",
     "typescript": "^7.0.2"
   }
 }

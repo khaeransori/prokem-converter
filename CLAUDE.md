@@ -28,11 +28,27 @@ the only place punctuation, spacing and capitalisation are handled — dialects
 convert one lowercase word and know nothing about text.
 
 Semarang and Unang are implemented here. Jogja and Malang delegate **encoding**
-to the `libil` package so output stays byte-identical to the reference
-implementation; their decode is ours, because libil has none. Never
-reimplement libil's encode, and never apply Semarang's `KEEP_FINAL` or nasal
-collapse to the other dialects — both would break that parity, which the
-tests assert directly against libil.
+to libil so output stays byte-identical to the reference implementation; their
+decode is ours, because libil has none. Never reimplement libil's encode, and
+never apply Semarang's `KEEP_FINAL` or nasal collapse to the other dialects —
+both would break that parity, which the tests assert directly against the real
+libil package.
+
+libil is **vendored** at `src/vendor/libil.js`, not imported from
+`node_modules` at runtime. It has to be: libil 0.1.2 assigns `c`, `sc`, `idx`,
+`map_idx`, `pair`, and `m` without declaring them, which is fine in the
+sloppy-mode CommonJS it was written for and a fatal `ReferenceError` under
+strict mode — which is every ESM bundle. Importing it directly shipped a
+package whose Jogja and Malang broke for anyone bundling with Vite, webpack,
+Rollup, or Next. The vendored copy declares those six identifiers and exports
+as ESM; every function body is byte-identical to upstream.
+
+Because the vendored module is ESM, it is strict by construction, so the
+ordinary Node tests now exercise the strict-mode path — deleting that
+declaration line fails 18 tests. That is the regression guard. libil stays
+installed as a **devDependency** so `test/jogja.test.js` and
+`test/malang.test.js` can assert our output still matches upstream. The
+published package has **no runtime dependencies**.
 
 `src/index.js` composes the four modules into namespaces plus a `dialects`
 record; the CLI and any consumer picker drive off that record.
@@ -48,10 +64,11 @@ record; the CLI and any consumer picker drive off that record.
   "fix" them.
 - Attested forms that contradict a formula belong in `LEXICON`, not in a
   special case inside the cipher.
-- The browser bundle (`dist/prokem.js`) stays strict. `libil` 0.1.2 assigns
-  `c`, `sc`, `idx`, `map_idx`, `pair`, and `m` without declaring them, which
-  throws under the bundle's strict mode; `scripts/build.mjs` has an esbuild
-  plugin that declares those six identifiers at module scope when it loads
-  libil's file, which is behaviour-preserving because each is written before
-  it is read within a single call. `test/dist.test.js` is the guard — remove
-  the plugin and `jogja`/`malang` encoding breaks in the bundle.
+- `src/vendor/libil.js` is third-party code kept byte-identical to upstream
+  apart from its module wrapper. Do not reformat it, do not "improve" it, and
+  do not type-check it — `jsconfig.json` excludes it deliberately and
+  `src/vendor/libil.d.ts` supplies its types instead.
+- The browser bundle (`dist/prokem.js`) stays strict, and `scripts/build.mjs`
+  needs no plugin to achieve that any more: the vendored source is already
+  strict-safe, so the fix serves every consumer's bundler rather than only
+  ours. `test/dist.test.js` guards the bundle.

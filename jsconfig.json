@@ -11,8 +11,13 @@
     "moduleResolution": "nodenext",
     "target": "es2022",
     "strict": true,
-    "skipLibCheck": true,
-    "paths": { "libil/lib/libil.js": ["./src/libil.d.ts"] }
+    "skipLibCheck": true
   },
-  "include": ["src/**/*.js", "src/libil.d.ts"]
+  "include": [
+    "src/**/*.js",
+    "src/vendor/libil.d.ts"
+  ],
+  "exclude": [
+    "src/vendor/libil.js"
+  ]
 }

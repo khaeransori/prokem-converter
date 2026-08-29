@@ -4,19 +4,10 @@
  */
 "use strict";
 var prokem = (() => {
-  var __create = Object.create;
   var __defProp = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
   var __getOwnPropNames = Object.getOwnPropertyNames;
-  var __getProtoOf = Object.getPrototypeOf;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
-  var __commonJS = (cb, mod) => function __require() {
-    try {
-      return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-    } catch (e) {
-      throw mod = 0, e;
-    }
-  };
   var __export = (target, all) => {
     for (var name in all)
       __defProp(target, name, { get: all[name], enumerable: true });
@@ -29,146 +20,7 @@ var prokem = (() => {
     }
     return to;
   };
-  var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-    // If the importer is in node compatibility mode or this is not an ESM
-    // file that has been converted to a CommonJS file using a Babel-
-    // compatible transform (i.e. "__esModule" has not been set), then set
-    // "default" to the CommonJS "module.exports" for node compatibility.
-    isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-    mod
-  ));
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-
-  // node_modules/libil/lib/libil.js
-  var require_libil = __commonJS({
-    "node_modules/libil/lib/libil.js"(exports, module) {
-      var c;
-      var sc;
-      var idx;
-      var map_idx;
-      var m;
-      var Libil = Libil || {};
-      Libil.CONSONANT_MAP = [
-        "h",
-        "n",
-        "c",
-        "r",
-        "k",
-        "d",
-        "t",
-        "s",
-        "w",
-        "l",
-        "p",
-        "dh",
-        "j",
-        "y",
-        "ny",
-        "m",
-        "g",
-        "b",
-        "th",
-        "ng"
-      ];
-      Libil.inverseCap = function(s) {
-        sc = s.slice(1);
-        return s.charAt(0).toLowerCase() + sc.toUpperCase();
-      };
-      Libil.capitalize = function(s) {
-        sc = s.slice(1);
-        return s.charAt(0).toUpperCase() + sc.toLowerCase();
-      };
-      Libil.fixCase = function(orig, mapped) {
-        if (orig.toLowerCase() == orig) {
-          return mapped.toLowerCase();
-        } else if (Libil.capitalize(orig) == orig) {
-          return Libil.capitalize(mapped);
-        } else if (orig.toUpperCase() == orig) {
-          return mapped.toUpperCase();
-        } else if (Libil.inverseCap(orig) == orig) {
-          return Libil.inverseCap(mapped);
-        } else {
-          return mapped;
-        }
-      };
-      Libil.mapToken = function(t) {
-        idx = Libil.CONSONANT_MAP.indexOf(t.toLowerCase());
-        if (idx === -1) {
-          return t;
-        }
-        map_idx = -1;
-        if (idx <= 9) {
-          map_idx = idx + 10;
-        } else {
-          map_idx = idx - 10;
-        }
-        return Libil.CONSONANT_MAP[map_idx];
-      };
-      Libil.mapFixToken = function(t) {
-        m = Libil.mapToken(t);
-        return Libil.fixCase(t, m);
-      };
-      Libil.fixSourceVocal = function(s) {
-        var vocals = ["a", "i", "u", "e", "o"];
-        var pair2 = s.slice(0, 2);
-        var c2 = s.charAt(0);
-        if (vocals.indexOf(c2) != -1) {
-          if (Libil.capitalize(pair2) == pair2) {
-            return "H" + c2.toLowerCase() + s.slice(1);
-          } else if (pair2.toUpperCase() == pair2) {
-            return "H" + s;
-          } else {
-            return "h" + s;
-          }
-        } else {
-          return s;
-        }
-      };
-      Libil.tokenize = function(s) {
-        var w = Libil.fixSourceVocal(s);
-        var tokens = [];
-        var pair2 = "";
-        if (!s.trim()) {
-          return tokens;
-        }
-        for (var i = 0; i < w.length; ++i) {
-          c = w[i];
-          pair2 = w.slice(i, i + 2);
-          if (-1 != Libil.CONSONANT_MAP.indexOf(pair2.toLowerCase())) {
-            ++i;
-            tokens.push(pair2);
-          } else {
-            tokens.push(c);
-          }
-        }
-        return tokens;
-      };
-      Libil.convert_word = function(s) {
-        var mappedTokens = Libil.tokenize(s).map(function(t) {
-          return Libil.mapFixToken(t);
-        });
-        return mappedTokens.join("");
-      };
-      Libil.convert_word_ngalam = function(s) {
-        var tokens = Libil.tokenize(s);
-        tokens.reverse();
-        return Libil.fixCase(s, tokens.join(""));
-      };
-      Libil.convert = function(s, ngalam) {
-        var words = s.split(" ");
-        var mappedWords = words.map(ngalam === true ? Libil.convert_word_ngalam : Libil.convert_word);
-        return mappedWords.join(" ");
-      };
-      if (typeof module !== "undefined") {
-        module.exports = {
-          tokenize: Libil.tokenize,
-          convert_word: Libil.convert_word,
-          convert_word_ngalam: Libil.convert_word_ngalam,
-          convert: Libil.convert
-        };
-      }
-    }
-  });
 
   // src/index.js
   var index_exports = {};
@@ -319,9 +171,134 @@ var prokem = (() => {
     decode: () => decode2,
     encode: () => encode2
   });
-  var import_libil = __toESM(require_libil(), 1);
-  var encode2 = (text) => mapWords(text, (word) => import_libil.default.convert_word(word));
-  var decode2 = (text) => mapWords(text, (word) => stripH(import_libil.default.convert_word(word)));
+
+  // src/vendor/libil.js
+  var c;
+  var sc;
+  var idx;
+  var map_idx;
+  var m;
+  var Libil = Libil || {};
+  Libil.CONSONANT_MAP = [
+    "h",
+    "n",
+    "c",
+    "r",
+    "k",
+    "d",
+    "t",
+    "s",
+    "w",
+    "l",
+    "p",
+    "dh",
+    "j",
+    "y",
+    "ny",
+    "m",
+    "g",
+    "b",
+    "th",
+    "ng"
+  ];
+  Libil.inverseCap = function(s) {
+    sc = s.slice(1);
+    return s.charAt(0).toLowerCase() + sc.toUpperCase();
+  };
+  Libil.capitalize = function(s) {
+    sc = s.slice(1);
+    return s.charAt(0).toUpperCase() + sc.toLowerCase();
+  };
+  Libil.fixCase = function(orig, mapped) {
+    if (orig.toLowerCase() == orig) {
+      return mapped.toLowerCase();
+    } else if (Libil.capitalize(orig) == orig) {
+      return Libil.capitalize(mapped);
+    } else if (orig.toUpperCase() == orig) {
+      return mapped.toUpperCase();
+    } else if (Libil.inverseCap(orig) == orig) {
+      return Libil.inverseCap(mapped);
+    } else {
+      return mapped;
+    }
+  };
+  Libil.mapToken = function(t) {
+    idx = Libil.CONSONANT_MAP.indexOf(t.toLowerCase());
+    if (idx === -1) {
+      return t;
+    }
+    map_idx = -1;
+    if (idx <= 9) {
+      map_idx = idx + 10;
+    } else {
+      map_idx = idx - 10;
+    }
+    return Libil.CONSONANT_MAP[map_idx];
+  };
+  Libil.mapFixToken = function(t) {
+    m = Libil.mapToken(t);
+    return Libil.fixCase(t, m);
+  };
+  Libil.fixSourceVocal = function(s) {
+    var vocals = ["a", "i", "u", "e", "o"];
+    var pair = s.slice(0, 2);
+    var c2 = s.charAt(0);
+    if (vocals.indexOf(c2) != -1) {
+      if (Libil.capitalize(pair) == pair) {
+        return "H" + c2.toLowerCase() + s.slice(1);
+      } else if (pair.toUpperCase() == pair) {
+        return "H" + s;
+      } else {
+        return "h" + s;
+      }
+    } else {
+      return s;
+    }
+  };
+  Libil.tokenize = function(s) {
+    var w = Libil.fixSourceVocal(s);
+    var tokens = [];
+    var pair = "";
+    if (!s.trim()) {
+      return tokens;
+    }
+    for (var i = 0; i < w.length; ++i) {
+      c = w[i];
+      pair = w.slice(i, i + 2);
+      if (-1 != Libil.CONSONANT_MAP.indexOf(pair.toLowerCase())) {
+        ++i;
+        tokens.push(pair);
+      } else {
+        tokens.push(c);
+      }
+    }
+    return tokens;
+  };
+  Libil.convert_word = function(s) {
+    var mappedTokens = Libil.tokenize(s).map(function(t) {
+      return Libil.mapFixToken(t);
+    });
+    return mappedTokens.join("");
+  };
+  Libil.convert_word_ngalam = function(s) {
+    var tokens = Libil.tokenize(s);
+    tokens.reverse();
+    return Libil.fixCase(s, tokens.join(""));
+  };
+  Libil.convert = function(s, ngalam) {
+    var words = s.split(" ");
+    var mappedWords = words.map(ngalam === true ? Libil.convert_word_ngalam : Libil.convert_word);
+    return mappedWords.join(" ");
+  };
+  var tokenize2 = Libil.tokenize;
+  var convert_word = Libil.convert_word;
+  var convert_word_ngalam = Libil.convert_word_ngalam;
+  var convert = Libil.convert;
+  var libil_default = { tokenize: tokenize2, convert_word, convert_word_ngalam, convert };
+
+  // src/jogja.js
+  var encode2 = (text) => mapWords(text, (word) => libil_default.convert_word(word));
+  var decode2 = (text) => mapWords(text, (word) => stripH(libil_default.convert_word(word)));
 
   // src/malang.js
   var malang_exports = {};
@@ -329,8 +306,7 @@ var prokem = (() => {
     decode: () => decode3,
     encode: () => encode3
   });
-  var import_libil2 = __toESM(require_libil(), 1);
-  var encode3 = (text) => mapWords(text, (word) => import_libil2.default.convert_word_ngalam(word));
+  var encode3 = (text) => mapWords(text, (word) => libil_default.convert_word_ngalam(word));
   var decode3 = (text) => mapWords(text, (word) => stripH(tokenize(word).reverse().join("")));
 
   // src/unang.js
@@ -351,14 +327,14 @@ var prokem = (() => {
       }
     }
     if (!/[aeiou]/.test(stem)) return word;
-    const m = stem.match(SPLIT);
-    if (!m) return word;
-    const [, b, x] = m;
-    const c = (
+    const m2 = stem.match(SPLIT);
+    if (!m2) return word;
+    const [, b, x] = m2;
+    const c2 = (
       /** @type {RegExpMatchArray} */
       x.match(/[aeiou]+/)[0]
     );
-    return "u" + x.replace(/[aeiou]/g, "a") + " " + b + "n" + c + "ng" + nya;
+    return "u" + x.replace(/[aeiou]/g, "a") + " " + b + "n" + c2 + "ng" + nya;
   }
   function decodePair(uWord, nWord) {
     if (uWord.charAt(0) !== "u") return null;
@@ -368,12 +344,12 @@ var prokem = (() => {
       nya = "nya";
       tail = tail.slice(0, -3);
     }
-    const m = tail.match(/^([a-z]*?)n([aeiou]+)ng$/);
-    if (!m) return null;
-    const [, b, c] = m;
+    const m2 = tail.match(/^([a-z]*?)n([aeiou]+)ng$/);
+    if (!m2) return null;
+    const [, b, c2] = m2;
     const x = uWord.slice(1);
     if (!/[aeiou]/.test(x)) return null;
-    return b + x.replace(/[aeiou]+/, c) + nya;
+    return b + x.replace(/[aeiou]+/, c2) + nya;
   }
   var encode4 = (text) => mapWords(text, encodeWord2);
   function decode4(text) {

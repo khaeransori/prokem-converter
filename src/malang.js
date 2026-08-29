@@ -10,7 +10,7 @@
  * end, and a second call prefixes another (aku -> ukah -> hakuh). Reversing
  * without the prefix and then stripping a leading h recovers the original.
  */
-import libil from 'libil/lib/libil.js'
+import libil from './vendor/libil.js'
 import { tokenize, stripH } from './hanacaraka.js'
 import { mapWords } from './text.js'
 
